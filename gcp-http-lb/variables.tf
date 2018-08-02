@@ -40,6 +40,7 @@ variable ip_version {
 }
 
 variable firewall_networks {
+  ##This can a shared_vpc name if you use shared-vpc setup or vpc in the same project
   description = "Name of the networks to create firewall rules in"
   type        = "list"
   default     = ["default"]
