@@ -84,7 +84,7 @@ resource "google_compute_http_health_check" "default" {
 
 resource "google_compute_firewall" "default-hc" {
   count         = "${length(var.firewall_networks)}"
-  project       = "${var.shared_vpc ? var.shared_vpc_project : var.project}"
+  project       = "${var.shared_vpc_enabled ? var.shared_vpc_project : var.project}"
   count         = "${length(var.backend_params)}"
   name          = "${var.name}-hc-${count.index}"
   network       = "${element(var.firewall_networks, count.index)}"
