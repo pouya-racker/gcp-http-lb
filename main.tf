@@ -1,5 +1,6 @@
 resource "google_compute_global_forwarding_rule" "http" {
-  project    = "${var.project}"
+  project = "${var.project}"
+
   ##Create this resource if "http_forward" is set to "true"
   count      = "${var.http_forward ? 1 : 0}"
   name       = "${var.name}"
@@ -10,7 +11,8 @@ resource "google_compute_global_forwarding_rule" "http" {
 }
 
 resource "google_compute_global_forwarding_rule" "https" {
-  project    = "${var.project}"
+  project = "${var.project}"
+
   ##Create this resource if "ssl" is set to "true"
   count      = "${var.ssl ? 1 : 0}"
   name       = "${var.name}-https"
@@ -49,7 +51,8 @@ resource "google_compute_ssl_certificate" "default" {
   name_prefix = "${var.name}-certificate-"
   private_key = "${var.private_key}"
   certificate = "${var.certificate}"
-  lifecycle   = {
+
+  lifecycle = {
     create_before_destroy = true
   }
 }
@@ -80,7 +83,6 @@ resource "google_compute_http_health_check" "default" {
   request_path = "${element(split(",", element(var.backend_params, count.index)), 0)}"
   port         = "${element(split(",", element(var.backend_params, count.index)), 2)}"
 }
-
 
 resource "google_compute_firewall" "default-hc" {
   count         = "${length(var.firewall_networks)}"

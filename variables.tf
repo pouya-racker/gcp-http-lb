@@ -5,7 +5,7 @@ variable project {
 
 variable shared_vpc_enabled {
   description = "Set to true if resource is being built in a shared-vpc"
-  default     = ""
+  default     = true
 }
 
 variable shared_vpc_project {
