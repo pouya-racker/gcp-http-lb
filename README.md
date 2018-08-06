@@ -5,9 +5,16 @@ Modular Global HTTP Load Balancer for GCE using forwarding rules.
 ## Usage
 
 ```ruby
-module "gce-lb-http" {
-  source            = "GoogleCloudPlatform/lb-http/google"
-  name              = "group-http-lb"
+module "L7LB" {
+  source            = "pouya-racker/L7LB/pouya"
+  version           = "0.2.0"
+  name              = "lb1"
+   
+  shared_vpc_enabled = true
+  shared_vpc_project = "${var.shared_vpc_project}"
+  
+  firewall_networks  = "${var.shared_vpc_name}"
+  
   target_tags       = ["${module.mig1.target_tags}", "${module.mig2.target_tags}"]
   backends          = {
     "0" = [
