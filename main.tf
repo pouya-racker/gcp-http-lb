@@ -3,7 +3,7 @@ resource "google_compute_global_forwarding_rule" "http" {
 
   ##Create this resource if "http_forward" is set to "true"
   count      = "${var.http_forward ? 1 : 0}"
-  name       = "${var.name}"
+  name       = "${var.name}-gfr-http"
   target     = "${google_compute_target_http_proxy.default.self_link}"
   ip_address = "${google_compute_global_address.default.address}"
   port_range = "80"
@@ -15,7 +15,7 @@ resource "google_compute_global_forwarding_rule" "https" {
 
   ##Create this resource if "ssl" is set to "true"
   count      = "${var.ssl ? 1 : 0}"
-  name       = "${var.name}-https"
+  name       = "${var.name}-gfr-https"
   target     = "${google_compute_target_https_proxy.default.self_link}"
   ip_address = "${google_compute_global_address.default.address}"
   port_range = "443"
@@ -24,7 +24,7 @@ resource "google_compute_global_forwarding_rule" "https" {
 
 resource "google_compute_global_address" "default" {
   project    = "${var.project}"
-  name       = "${var.name}-address"
+  name       = "${var.name}-gip-lb"
   ip_version = "${var.ip_version}"
 }
 
@@ -60,14 +60,14 @@ resource "google_compute_ssl_certificate" "default" {
 resource "google_compute_url_map" "default" {
   project         = "${var.project}"
   count           = "${var.create_url_map ? 1 : 0}"
-  name            = "${var.name}-url-map"
+  name            = "${var.name}-um"
   default_service = "${google_compute_backend_service.default.0.self_link}"
 }
 
 resource "google_compute_backend_service" "default" {
   project         = "${var.project}"
   count           = "${length(var.backend_params)}"
-  name            = "${var.name}-backend-${count.index}"
+  name            = "${var.name}-be-${count.index}"
   port_name       = "${element(split(",", element(var.backend_params, count.index)), 1)}"
   protocol        = "HTTP"
   timeout_sec     = "${element(split(",", element(var.backend_params, count.index)), 3)}"
@@ -79,7 +79,7 @@ resource "google_compute_backend_service" "default" {
 resource "google_compute_http_health_check" "default" {
   project      = "${var.project}"
   count        = "${length(var.backend_params)}"
-  name         = "${var.name}-backend-${count.index}"
+  name         = "${var.name}-hc-${count.index}"
   request_path = "${element(split(",", element(var.backend_params, count.index)), 0)}"
   port         = "${element(split(",", element(var.backend_params, count.index)), 2)}"
 }

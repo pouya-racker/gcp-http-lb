@@ -34,6 +34,11 @@ variable name {
   description = "Name for the forwarding rule and prefix for supporting resources"
 }
 
+#variable id {
+#  description = "load balancer unique id and postfix for supporting resources"
+#}
+
+
 variable target_tags {
   description = "List of target tags for health check firewall rule."
   type        = "list"
