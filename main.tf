@@ -79,7 +79,7 @@ resource "google_compute_backend_service" "default" {
 resource "google_compute_http_health_check" "default" {
   project      = "${var.project}"
   count        = "${length(var.backend_params)}"
-  name         = "${var.name}-hc-${count.index}"
+  name         = "${var.name}-http-hc-${count.index}"
   request_path = "${element(split(",", element(var.backend_params, count.index)), 0)}"
   port         = "${element(split(",", element(var.backend_params, count.index)), 2)}"
 }
@@ -88,7 +88,7 @@ resource "google_compute_firewall" "default-hc" {
   count         = "${length(var.firewall_networks)}"
   project       = "${var.shared_vpc_enabled ? var.shared_vpc_project : var.project}"
   count         = "${length(var.backend_params)}"
-  name          = "${var.name}-hc-${count.index}"
+  name          = "${var.name}-gcp-hc-${count.index}"
   network       = "${element(var.firewall_networks, count.index)}"
   source_ranges = ["130.211.0.0/22", "35.191.0.0/16", "209.85.152.0/22", "209.85.204.0/22"]
   target_tags   = ["${var.target_tags}"]
