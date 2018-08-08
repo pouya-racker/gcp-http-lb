@@ -7,7 +7,7 @@ Modular Global HTTP Load Balancer for GCE using forwarding rules.
 ```ruby
 module "L7LB" {
   source            = "pouya-racker/L7LB/pouya"
-  name              = "lb01"
+  lb_name              = "lb01"
    
   shared_vpc_enabled = true
   shared_vpc_project = "${var.shared_vpc_project}"
