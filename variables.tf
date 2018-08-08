@@ -13,10 +13,10 @@ variable shared_vpc_project {
   default     = ""
 }
 
-variable shared_vpc_name {
-  ##This can be a shared_vpc name if you use shared-vpc setup or vpc in the same project
-  description = "Name of the networks to create firewall rules in"
-  default     = ""
+variable shared_vpc_network {
+  description = "Name of the networks to create firewall rules in, can be shared vpc network name if you use shared vpc"
+  type        = "list"
+  default     = [""]
 }
 
 variable region {
@@ -28,6 +28,7 @@ variable ip_version {
   description = "IP version for the Global address (IPv4 or v6) - Empty defaults to IPV4"
   default     = ""
 }
+
 
 variable lb_name {
   description = "Name for the forwarding rule and prefix for supporting resources"
