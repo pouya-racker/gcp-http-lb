@@ -12,7 +12,7 @@ module "L7LB" {
   shared_vpc_enabled = true
   shared_vpc_project = "${var.shared_vpc_project}"
   
-  shared_vpc_network  = "${var.shared_vpc_network}"
+  firewall_networks  = "${var.firewall_networks}"
   
   target_tags       = ["${module.mig1.target_tags}", "${module.mig2.target_tags}"]
   backends          = {

@@ -1,7 +1,5 @@
 resource "google_compute_global_forwarding_rule" "http" {
   project = "${var.project}"
-
-  ##Create this resource if "http_forward" is set to "true"
   count      = "${var.http_forward ? 1 : 0}"
   name       = "${var.lb_name}-gfr-http"
   target     = "${google_compute_target_http_proxy.default.self_link}"
@@ -12,8 +10,6 @@ resource "google_compute_global_forwarding_rule" "http" {
 
 resource "google_compute_global_forwarding_rule" "https" {
   project = "${var.project}"
-
-  ##Create this resource if "ssl" is set to "true"
   count      = "${var.ssl ? 1 : 0}"
   name       = "${var.lb_name}-gfr-https"
   target     = "${google_compute_target_https_proxy.default.self_link}"
@@ -85,11 +81,11 @@ resource "google_compute_http_health_check" "default" {
 }
 
 resource "google_compute_firewall" "default-hc" {
-  count         = "${length(var.shared_vpc_network)}"
+  count         = "${length(var.firewall_networks)}"
   project       = "${var.shared_vpc_enabled ? var.shared_vpc_project : var.project}"
   count         = "${length(var.backend_params)}"
   name          = "${var.lb_name}-gcp-hc-${count.index}"
-  network       = "${element(var.shared_vpc_network, count.index)}"
+  network       = "${element(var.firewall_networks, count.index)}"
   source_ranges = ["130.211.0.0/22", "35.191.0.0/16", "209.85.152.0/22", "209.85.204.0/22"]
   target_tags   = ["${var.target_tags}"]
 

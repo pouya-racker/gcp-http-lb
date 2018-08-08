@@ -13,8 +13,8 @@ variable shared_vpc_project {
   default     = ""
 }
 
-variable shared_vpc_network {
-  description = "Name of the networks to create firewall rules in, can be shared vpc network name if you use shared vpc"
+variable firewall_networks {
+  description = "Name of the networks to create firewall rules in, should be shared vpc network name if you use shared vpc"
   type        = "list"
   default     = [""]
 }
