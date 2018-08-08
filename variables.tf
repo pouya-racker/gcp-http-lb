@@ -9,7 +9,7 @@ variable shared_vpc_enabled {
 }
 
 variable shared_vpc_project {
-  description = "The project to deploy to, if not set the default provider project is used."
+  description = "Shared vpc project name.."
   default     = ""
 }
 
